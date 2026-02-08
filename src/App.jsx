@@ -25,7 +25,7 @@ function App() {
       update() {
         this.x += this.speedX
         this.y += this.speedY
-        if (this.size > 0.1) this.size -= 0.5
+        if (this.size > 0.1) this.size -= 0.05
       }
 
       draw() {
@@ -37,6 +37,9 @@ function App() {
     }
 
     const handleMouseMove = (e) => {
+      for (let i = 0; i < 5; i++) {
+        particles.push(new Particle(e.clientX, e.clientY))
+      }
       const x = e.clientX
       const y = e.clientY
       console.log(x, y)
@@ -45,8 +48,12 @@ function App() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       for (let i = 0; i < particles.length; i++) {
-        particlesArray[i].update()
-        particlesArray[i].draw()
+        particles[i].update()
+        particles[i].draw()
+        if(particles[i].size <= 0.3) {
+          particles.splice(i, 1)
+          i--
+        }
       }
       requestAnimationFrame(animate)
     }
