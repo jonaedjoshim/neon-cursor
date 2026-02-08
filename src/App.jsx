@@ -21,6 +21,19 @@ function App() {
         this.speedY = Math.random() * 3 - 1.5
         this.color = `hsl(${Math.random() * 360}, 50%, 50%)`
       }
+
+      update() {
+        this.x += this.speedX
+        this.y += this.speedY
+        if (this.size > 0.1) this.size -= 0.5
+      }
+
+      draw() {
+        ctx.fillStyle = this.color
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
     }
 
     const handleMouseMove = (e) => {
@@ -28,6 +41,17 @@ function App() {
       const y = e.clientY
       console.log(x, y)
     }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      for (let i = 0; i < particles.length; i++) {
+        particlesArray[i].update()
+        particlesArray[i].draw()
+      }
+      requestAnimationFrame(animate)
+    }
+
+    animate()
 
     window.addEventListener('mousemove', handleMouseMove)
 
